@@ -45,7 +45,7 @@
 ```
 
 ### 4. Смяна на статус на поръчка (Change Repair Status)
-- Method: PATCH
+- Method: PUT
 - URL: http://127.0.0.1:8000/api/repairs/{id}/status
 - Body (JSON):
 ```

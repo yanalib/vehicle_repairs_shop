@@ -100,8 +100,7 @@ class VehicleController extends Controller
             'vin' => 'required|string|max:255',
         ]);
 
-        $vehicleData = array_merge($validated, ['client_id' => $validatedClient['client_id']]);
-        $vehicle = $this->vehicleService->createVehicleForClient($vehicleData);
+        $vehicle = $this->vehicleService->createVehicleForClient((int)$validatedClient['client_id'], $validated);
         return response()->json($vehicle, 201);
     }
 }
