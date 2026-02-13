@@ -40,4 +40,10 @@ class VehicleService
 		}
 		return Vehicle::all();
 	}
+
+    public function createVehicleForClient(int $clientId, array $data): Vehicle
+    {
+        $vehicleData = array_merge($data, ['client_id' => $clientId]);
+        return Vehicle::create($vehicleData);
+    }
 }

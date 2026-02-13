@@ -19,7 +19,7 @@ class RepairController extends Controller
         $validated = $request->validate([
             'vehicle_id' => 'nullable|integer|min:1',
         ]);
-        
+
         $vehicleId = $validated['vehicle_id'] ?? null;
         $repairs = $this->repairService->listRepairs($vehicleId);
         return response()->json($repairs);
@@ -87,5 +87,26 @@ class RepairController extends Controller
 
         $deleted = $this->repairService->deleteRepair($validated['id']);
         return response()->json(null, $deleted ? 204 : 404);
+    }
+
+    public function updateRepairStatus(Request $request, $id)
+    {
+        $validatedId = validator(['id' => $id], [
+            'id' => 'required|integer|min:1',
+        ])->validate();
+
+        $validated = $request->validate([
+            'status' => 'required|string|max:255',
+        ]);
+
+        $repair = $this->repairService->getRepairById($validatedId['id']);
+        if (!$repair) {
+            return response()->json(['error' => 'Repair not found'], 404);
+        }
+
+        $repair->status = $validated['status'];
+        $repair->save();
+
+        return response()->json($repair);
     }
 }

@@ -81,8 +81,27 @@ class VehicleController extends Controller
         $validated = validator(['id' => $id], [
             'id' => 'required|integer|min:1',
         ])->validate();
-        
+
         $deleted = $this->vehicleService->deleteVehicle($validated['id']);
         return response()->json(null, $deleted ? 204 : 404);
+    }
+
+    public function addVehicleToClient(Request $request, $clientId)
+    {
+        $validatedClient = validator(['client_id' => $clientId], [
+            'client_id' => 'required|integer|exists:clients,id',
+        ])->validate();
+
+        $validated = $request->validate([
+            'reg_no' => 'required|string|max:255',
+            'make' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|integer|min:1886',
+            'vin' => 'required|string|max:255',
+        ]);
+
+        $vehicleData = array_merge($validated, ['client_id' => $validatedClient['client_id']]);
+        $vehicle = $this->vehicleService->createVehicleForClient($vehicleData);
+        return response()->json($vehicle, 201);
     }
 }

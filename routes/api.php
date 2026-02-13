@@ -28,3 +28,6 @@ Route::prefix('repairs')->group(function () {
     Route::put('/{id}', [RepairController::class, 'update']);
     Route::delete('/{id}', [RepairController::class, 'destroy']);
 });
+
+Route::post('/clients/{clientId}/vehicles', [VehicleController::class, 'addVehicleToClient']);
+Route::put('/repairs/{id}/status', [RepairController::class, 'updateRepairStatus']);
